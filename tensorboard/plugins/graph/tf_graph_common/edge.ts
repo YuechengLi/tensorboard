@@ -100,6 +100,16 @@ export function buildGroup(sceneGroup,
         // index node group for quick highlighting
         sceneElement._edgeGroupIndex[getEdgeKey(d)] = edgeGroup;
 
+        // Make edges clickable.
+        edgeGroup.on('click',
+            d => {
+              // Stop this event's propagation so that it isn't also considered
+              // a graph-select.
+              (<Event>d3.event).stopPropagation();
+              console.log('edge clicked', d);
+              sceneElement.fire('edge-select');
+            });
+
         // Add line during enter because we're assuming that type of line
         // normally does not change.
         appendEdge(edgeGroup, d, sceneElement);
